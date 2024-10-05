@@ -9,8 +9,7 @@ export const FoodSchema = new Schema(
         description:{type:String, required:true},
         foodCategory:{type:String,required:true},
         isDeliveryAvailable:{type:String,required:true},
-        //new add
-        foodCat:{type:String,required:true},
+        
 
 });
 
