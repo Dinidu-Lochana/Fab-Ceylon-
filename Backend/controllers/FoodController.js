@@ -3,7 +3,8 @@ const mongoose = require('mongoose');
 
 
 const createFood = async (req,res) => {
-    const { foodName , price , description , foodCategory, isDeliveryAvailable, adminRef } = req.body;
+
+    const { foodName , price , description , foodCategory, isDeliveryAvailable } = req.body;
 
     let emptyFields = []
 
@@ -26,7 +27,9 @@ const createFood = async (req,res) => {
         return res.status(400).json({error: 'Please fill in all the fields', emptyFields})
     }
     try{
-        const food = await Food.create({foodName,price,description,foodCategory,isDeliveryAvailable,adminRef})
+        const admin_id = req.admin._id
+
+        const food = await Food.create({foodName,price,description,foodCategory,isDeliveryAvailable})
         res.status(200).json(food)
         res.json({msgg:'Post the Food'})
     }

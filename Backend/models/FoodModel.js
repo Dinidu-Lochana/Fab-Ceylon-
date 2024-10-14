@@ -24,7 +24,7 @@ const FoodSchema = new Schema(
             type:Boolean,
             required:true
         },
-        adminRef:{
+        admin_id:{
             type:String,
             required:true,
         }
