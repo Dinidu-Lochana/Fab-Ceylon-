@@ -5,6 +5,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom'; 
 import '../CSS/AddFood.css';
+import { jwtDecode } from 'jwt-decode';
 
 const AddFood = () => {
     const navigate = useNavigate();
@@ -22,18 +23,23 @@ const AddFood = () => {
     }
 
     const addFood = async () => {
-        console.log("Add food Function Executed",formData)
-        const response = await axios
+        console.log("Add food Function Executed", formData);
 
-        const adminId = localStorage.getItem("admin_id");
-        
+        // Get token from local storage and decode it to extract admin_id
+        const token = localStorage.getItem("admin");
+        let adminId = null;
+        if (token) {
+            const decodedToken = jwtDecode(token);
+            adminId = decodedToken._id; // Replace 'admin_id' with the actual field name in the token payload
+        }
+
         const payload = {
             foodName: formData.foodName,
             price: formData.price,
             description: formData.description,
             foodCategory: formData.foodCategory,
             isDeliveryAvailable: formData.isDeliveryAvailable,
-            admin_id: adminId 
+            admin_id: adminId,
         };
 
         try {
@@ -48,13 +54,11 @@ const AddFood = () => {
             );
 
             toast.success("Successfully created Food", { containerId: 'successMessage' });
-            navigate("/");  
+            navigate("/");
         } catch (error) {
-            toast.error(error.response.data.error, { containerId: 'ErrorMessage' });
-        }
-
-
-    }
+            toast.error(error.response?.data?.error || "An error occurred", { containerId: 'ErrorMessage' });
+        }
+    };
     
     return (
         <div className='signup'>
