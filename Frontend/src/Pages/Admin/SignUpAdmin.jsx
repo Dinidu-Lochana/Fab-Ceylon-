@@ -41,7 +41,7 @@ const SignUpAdmin = () => {
     }
     )
     .then((response)=>{
-        localStorage.setItem("admin", JSON.stringify(response.data));
+        localStorage.setItem("admin", response.data.admin_id);
         toast.success("successfully created account", {containerId: 'successMessage'})
         navigate("/");
     })

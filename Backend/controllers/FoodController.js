@@ -27,7 +27,7 @@ const createFood = async (req,res) => {
         return res.status(400).json({error: 'Please fill in all the fields', emptyFields})
     }
     try{
-        const admin_id = req.admin._id
+        
 
         const food = await Food.create({foodName,price,description,foodCategory,isDeliveryAvailable})
         res.status(200).json(food)

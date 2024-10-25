@@ -13,7 +13,8 @@ const AddFood = () => {
         price : "",
         description : "",
         foodCategory : "",
-        isDeliveryAvailable: ""
+        isDeliveryAvailable: "",
+        
     })
 
     const changeHandler = (e)=>{
@@ -24,23 +25,33 @@ const AddFood = () => {
         console.log("Add food Function Executed",formData)
         const response = await axios
 
-        .post(
-            `${process.env.REACT_APP_BACKEND_URL_ADRESS}/api/admins/createfood`,
-            JSON.stringify({foodName:formData.foodName, price:formData.price, description:formData.description, foodCategory:formData.foodCategory, isDeliveryAvailable:formData.isDeliveryAvailable}),
-            {
-                headers: {
-                    "Content-Type": "application/json",
+        const adminId = localStorage.getItem("admin_id");
+        
+        const payload = {
+            foodName: formData.foodName,
+            price: formData.price,
+            description: formData.description,
+            foodCategory: formData.foodCategory,
+            isDeliveryAvailable: formData.isDeliveryAvailable,
+            admin_id: adminId 
+        };
+
+        try {
+            const response = await axios.post(
+                `${process.env.REACT_APP_BACKEND_URL_ADRESS}/api/admins/createfood`,
+                JSON.stringify(payload),
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
                 }
-            }
-        )
-        .then((response)=> {
-            toast.success("Successfully created Food", {containerId: 'successMessage'})
-            navigate("/");  // navigate to viewfood
-        })
-        .catch((error)=>{
-            toast.error(error.response.data.error,{containerId: 'ErrorMessage'})
-            return { data: null };
-        })
+            );
+
+            toast.success("Successfully created Food", { containerId: 'successMessage' });
+            navigate("/");  
+        } catch (error) {
+            toast.error(error.response.data.error, { containerId: 'ErrorMessage' });
+        }
 
 
     }
@@ -52,7 +63,17 @@ const AddFood = () => {
             <div className="signup-field">
                 <div className="input"><input type="text" placeholder='Food Name' name="foodName" className='name-input' value={formData.foodName} onChange={changeHandler}/></div>
                 <div className="input"><input type="number" placeholder='Price' name="price" className='price-input' value={formData.price} onChange={changeHandler}/></div>
-                <div className="input"><input type="text" placeholder='Description' name="description"  className='description-input' value={formData.description} onChange={changeHandler} /></div>
+                <div className="input">
+                <textarea 
+                    placeholder='Description' 
+                    name="description"  
+                    className='description-input' 
+                    value={formData.description} 
+                    onChange={changeHandler} 
+                    rows={4} 
+                    style={{ resize: 'none', width: '100%', borderRadius: '20px', padding: '10px' }} 
+                />
+            </div>
                 <div className="input">
                     <select name="foodCategory" className='category-input' value={formData.foodCategory} onChange={changeHandler}>
                         <option value="" disabled>Select Category</option>

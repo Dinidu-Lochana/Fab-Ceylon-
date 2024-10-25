@@ -10,11 +10,30 @@
     margin-bottom: 8px;
 }
 
+.signup-field input, 
+.signup-field select, 
+.signup-field textarea {
+    height: 40px; /* Keep consistent height */
+    width: 100%; /* Full width for form inputs */
+    background-color: #FFFFFF; /* Set background color to white */
+    border: 1px solid #c9c9c9; /* Border color */
+    border-radius: 20px; /* Rounded corners */
+    font-size: 14px; /* Font size */
+    padding-left: 10px; /* Padding for text */
+    color: #333; /* Text color for better readability */
+}
+
+.signup-field textarea {
+    resize: none; /* Disable resizing for textarea */
+    padding: 10px; /* Padding inside textarea */
+}
+
+
 .child {
     padding: 50px;
     position: absolute;
     width: 680px;
-    background-color: white;
+    background-color: rgb(255, 255, 255);
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
