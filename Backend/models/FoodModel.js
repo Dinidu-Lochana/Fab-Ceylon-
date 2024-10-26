@@ -27,6 +27,10 @@ const FoodSchema = new Schema(
         admin_id:{
             type:String,
             required:true,
+        },
+        image: { 
+            type: String,
+            required: true
         }
 });
 

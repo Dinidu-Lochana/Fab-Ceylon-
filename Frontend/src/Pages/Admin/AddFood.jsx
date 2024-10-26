@@ -9,36 +9,46 @@ import { jwtDecode } from 'jwt-decode';
 
 const AddFood = () => {
     const navigate = useNavigate();
+    const [file, setFile] = useState(null);
     const [formData,setFormData] = useState({
+        
         foodName : "",
         price : "",
         description : "",
         foodCategory : "",
         isDeliveryAvailable: "",
+        image:""
         
     })
+
+    
 
     const changeHandler = (e)=>{
         setFormData({...formData,[e.target.name]:e.target.value})
     }
 
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            setFormData({ ...formData, image: reader.result }); 
+        };
+        reader.readAsDataURL(file);
+    };
+
     const addFood = async () => {
         console.log("Add food Function Executed", formData);
 
-        // Get token from local storage and decode it to extract admin_id
+        
         const token = localStorage.getItem("admin");
         let adminId = null;
         if (token) {
             const decodedToken = jwtDecode(token);
-            adminId = decodedToken._id; // Replace 'admin_id' with the actual field name in the token payload
+            adminId = decodedToken._id; 
         }
 
         const payload = {
-            foodName: formData.foodName,
-            price: formData.price,
-            description: formData.description,
-            foodCategory: formData.foodCategory,
-            isDeliveryAvailable: formData.isDeliveryAvailable,
+            ...formData,
             admin_id: adminId,
         };
 
@@ -65,6 +75,9 @@ const AddFood = () => {
         <div className="signup-container">
             <h1>Add food</h1>
             <div className="signup-field">
+                <div className='input'>
+                        <input type='file' accept="image/*" onChange={handleImageChange} />
+                </div>
                 <div className="input"><input type="text" placeholder='Food Name' name="foodName" className='name-input' value={formData.foodName} onChange={changeHandler}/></div>
                 <div className="input"><input type="number" placeholder='Price' name="price" className='price-input' value={formData.price} onChange={changeHandler}/></div>
                 <div className="input">
