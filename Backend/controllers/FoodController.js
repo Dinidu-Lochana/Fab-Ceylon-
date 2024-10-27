@@ -41,7 +41,14 @@ const createFood = async (req,res) => {
     }
 }
 
+const getFoods = async (req,res) => {
+    const admin_id = req.admin._id
+    const foods = await Food.find({admin_id}).sort({createdAt: -1})
+
+    res.status(200).json(foods)
+}
 
 module.exports = {
     createFood,
+    getFoods,
 }
