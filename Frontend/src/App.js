@@ -5,6 +5,8 @@ import SignUpCustomer from './Pages/SignUpCustomer';
 import SignUpAdmin from './Pages/Admin/SignUpAdmin';
 import LoginAdmin from './Pages/Admin/LoginAdmin';
 import AdminDashboard from './Pages/Admin/AdminDashboard';
+import AddFood from './Pages/Admin/AddFood';
+
 
 import { Home } from './Pages/Home';
 
@@ -19,6 +21,7 @@ function App() {
           <Route path='/adminsignup' element={<SignUpAdmin />}/>
           <Route path='/adminlogin' element={< LoginAdmin/>}/>
           <Route path='/admindashboard' element={< AdminDashboard/>}/>
+          <Route path='/addfood' element={< AddFood/>}/>
 
         </Routes>
       </BrowserRouter>
