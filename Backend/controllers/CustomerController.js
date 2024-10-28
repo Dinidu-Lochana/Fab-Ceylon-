@@ -1,5 +1,6 @@
 const Customer = require("../models/CustomerModel");
 const jwt = require("jsonwebtoken");
+
 const CreateWebToken = (_id) => {
   return jwt.sign({ _id }, process.env.TOKENCODE, { expiresIn: "3d" });
 };

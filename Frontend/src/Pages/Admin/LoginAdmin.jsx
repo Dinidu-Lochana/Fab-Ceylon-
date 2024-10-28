@@ -36,7 +36,7 @@ const LoginAdmin =()=>{
           }
         )
         .then((response)=>{
-            localStorage.setItem("user", JSON.stringify(response.data));
+            localStorage.setItem("admin", JSON.stringify(response.data));
             toast.success("successfully logged in", {containerId: 'successMessage'})
             navigate("/");
         })
