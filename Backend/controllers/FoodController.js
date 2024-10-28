@@ -1,10 +1,24 @@
 const Food = require('../models/FoodModel');
 const mongoose = require('mongoose');
+const multer = require('multer');
+const path = require('path');
 
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'uploads/')       // file storing path
+    },
+
+    filename: (req , file, cb)=>{
+        cb(null, Date.now() + path.extname(file.originalname));
+    }
+});
+
+const upload = multer({ storage: storage });
 
 const createFood = async (req,res) => {
     
-    const {admin_id, foodName , price , description , foodCategory, isDeliveryAvailable, image } = req.body;
+    const {admin_id, foodName , price , description , foodCategory, isDeliveryAvailable } = req.body;
 
     let emptyFields = []
 
@@ -23,21 +37,30 @@ const createFood = async (req,res) => {
     if(!isDeliveryAvailable){
         emptyFields.push['isDeliveryAvailable'];
     }
-    if(!image){
-        emptyFields.push['image'];
+    if (!req.file) {
+        emptyFields.push('image');
     }
     if(emptyFields.length>0){
         return res.status(400).json({error: 'Please fill in all the fields', emptyFields})
     }
-    try{
-        
+    try {
 
-        const food = await Food.create({admin_id, foodName, price, description, foodCategory, isDeliveryAvailable, image})
-        res.status(200).json({ message: 'Food created successfully', food })
+        const imagePath = req.file.path;
 
-    }
-    catch(error){
-        res.status(400).json({error:error.message})
+        const foodData = {
+            admin_id,
+            foodName,
+            price,
+            description,
+            foodCategory,
+            isDeliveryAvailable,
+            image: imagePath
+        };
+
+        const food = await Food.create(foodData);
+        res.status(200).json({ message: 'Food created successfully', food });
+    } catch (error) {
+        res.status(400).json({ error: error.message });
     }
 }
 
@@ -53,5 +76,6 @@ const getFoods = async (req, res) => {
 
 module.exports = {
     createFood,
+    upload,
     getFoods,
 }

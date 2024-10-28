@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const { createFood, getFoods } =  require('../controllers/FoodController');
+const { upload, createFood, getFoods } =  require('../controllers/FoodController');
 
-router.post('/createfood',createFood);
+router.post('/createfood', upload.single('image'), createFood);
 router.get('/foods',getFoods);
 
 
