@@ -9,6 +9,7 @@ import AddFood from './Pages/Admin/AddFood';
 
 
 import { Home } from './Pages/Home';
+import ViewFoods from './Pages/Admin/ViewFoods';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route path='/adminlogin' element={< LoginAdmin/>}/>
           <Route path='/admindashboard' element={< AdminDashboard/>}/>
           <Route path='/addfood' element={< AddFood/>}/>
+          <Route path='/foods' element={< ViewFoods/>}/>
 
         </Routes>
       </BrowserRouter>
