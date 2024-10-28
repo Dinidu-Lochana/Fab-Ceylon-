@@ -11,6 +11,9 @@ import AddFood from './Pages/Admin/AddFood';
 import { Home } from './Pages/Home';
 import ViewFoods from './Pages/Admin/ViewFoods';
 
+
+
+
 function App() {
   return (
     <div className="App">

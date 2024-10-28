@@ -2,6 +2,7 @@ const Food = require('../models/FoodModel');
 const mongoose = require('mongoose');
 const multer = require('multer');
 const path = require('path');
+const jwt = require('jsonwebtoken');
 
 
 const storage = multer.diskStorage({
@@ -65,12 +66,28 @@ const createFood = async (req,res) => {
 }
 
 const getFoods = async (req, res) => {
-    const admin_id = req.admin._id;  
+    const authHeader = req.headers.authorization;
+
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+        return res.status(401).json({ error: "Unauthorized access. Token not provided or invalid format." });
+    }
+
+    const token = authHeader.split(" ")[1]; 
+    
     try {
-        const foods = await Food.find({ admin_id }).sort({ createdAt: -1 });
+        
+        const tokenObject = JSON.parse(token);
+
+        const createdToken = tokenObject.createdToken;
+
+        const decodedToken = jwt.decode(createdToken);
+        const adminId = decodedToken._id; 
+
+        const foods = await Food.find({ admin_id : adminId }).sort({ createdAt: -1 });
         res.status(200).json(foods);
     } catch (error) {
-        res.status(400).json({ error: error.message });
+        
+        return res.status(401).json({ token,error: "Unauthorized access. Invalid or expired token." });
     }
 };
 

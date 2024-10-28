@@ -29,7 +29,7 @@ const AddFood = () => {
     };
 
     const addFood = async () => {
-        console.log('Add food Function Executed', formData);
+       
 
         const token = localStorage.getItem('admin');
         let adminId = null;
