@@ -50,10 +50,11 @@ const ViewFoods = () => {
                 {foods.map((food) => (
                     <div className="food-item" key={food._id}>
                         <img 
-                            src={food.image} // Use the image directly
-                            alt={food.foodName} 
-                            className="food-image" 
+                        src={`${process.env.REACT_APP_BACKEND_URL_ADRESS}/${food.image.replace("\\", "/")}`} // Adjust path format
+                        alt={food.foodName} 
+                        className="food-image" 
                         />
+
                         <div className="food-details">
                             <h2 className="food-name">{food.foodName}</h2>
                             <p className="food-price">Price: Rs.{food.price}.00</p>

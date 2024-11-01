@@ -91,11 +91,86 @@ const getFoods = async (req, res) => {
     }
 };
 
+const updateFood = async (req, res) => {
+    console.log("Update Food Function Called");
+
+    const { id } = req.params;
+    console.log("Received ID:", id);
+
+    const { foodName, price, description, foodCategory, isDeliveryAvailable } = req.body;
+
+    let emptyFields = [];
+
+    if (!foodName) {
+        emptyFields.push('foodName');
+    }
+    if (!price) {
+        emptyFields.push('price');
+    }
+    if (!description) {
+        emptyFields.push('description');
+    }
+    if (!foodCategory) {
+        emptyFields.push('foodCategory');
+    }
+    if (!isDeliveryAvailable) {
+        emptyFields.push('isDeliveryAvailable');
+    }
+
+    if (emptyFields.length > 0) {
+        return res.status(400).json({ error: 'Please fill in all the fields', emptyFields });
+    }
+
+    try {
+        // Use req.file if an image file is uploaded
+        let updatedData = { foodName, price, description, foodCategory, isDeliveryAvailable };
+
+        if (req.file) {
+            updatedData.image = req.file.path;  // Save the new image path if provided
+        }
+
+        const updatedFood = await Food.findByIdAndUpdate(id, updatedData, { new: true });
+
+        if (!updatedFood) {
+            return res.status(404).json({ error: 'Food not found' });
+        }
+
+        res.status(200).json(updatedFood);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};
+
+const deleteFood = async (req, res) => {
+    const { id } = req.params;
+    console.log("Delete Food Function Called with ID:", id); 
+
+    try {
+        
+        const deletedFood = await Food.findByIdAndDelete(id);
+        
+       
+        if (!deletedFood) {
+            console.log("Food not found with ID:", id); 
+            return res.status(404).json({ error: 'Food not found' });
+        }
+
+     
+        res.status(200).json({ message: 'Food deleted successfully' });
+    } catch (error) {
+       
+        console.error("Error deleting food:", error.message);
+        
+        res.status(400).json({ error: error.message });
+    }
+};
+
 
 
 module.exports = {
     createFood,
     upload,
     getFoods,
-    
+    updateFood,
+    deleteFood
 }
