@@ -58,7 +58,10 @@ const ViewFoods = () => {
                         <div className="food-details">
                             <h2 className="food-name">{food.foodName}</h2>
                             <p className="food-price">Price: Rs.{food.price}.00</p>
-                            <p className="food-category">{food.foodCategory}</p>
+                            <p className="food-category">
+                                {food.foodCategory.replace(/-&-/g, ' & ')}
+                            </p>
+
                             <p className="food-delivery">
                                 Delivery Available: {food.isDeliveryAvailable ? "Yes" : "No"}
                             </p>

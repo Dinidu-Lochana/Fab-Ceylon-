@@ -176,23 +176,23 @@ const AddFood = () => {
                         >
                             <option value='' disabled>Select Category</option>
                             <option value="Appetizer">Appetizer</option>
-                            <option value="Salad & Soup">Salad & Soup</option>
-                            <option value="Pasta & Spaghetti">Pasta & Spaghetti</option>
-                            <option value="Fried Rice">Fried Rice</option>
+                            <option value="Salad-&-Soup">Salad & Soup</option>
+                            <option value="Pasta-&-Spaghetti">Pasta & Spaghetti</option>
+                            <option value="Fried-Rice">Fried Rice</option>
                             <option value="Biriyani">Biriyani</option>
                             <option value="Kottu">Kottu</option>
                             <option value="Noodles">Noodles</option>
                             <option value="Add-On">Add-On</option>
-                            <option value="Side Dishes">Side Dishes</option>
-                            <option value="Fab Signature Shovel Rice">Fab Signature Shovel Rice</option>
-                            <option value="Burger & Submarine">Burger & Submarine</option>
-                            <option value="Sandwiches & Submarines">Sandwiches & Submarines</option>
+                            <option value="Side-Dishes">Side Dishes</option>
+                            <option value="Fab-Signature-Shovel-Rice">Fab Signature Shovel Rice</option>
+                            <option value="Burger-&-Submarine">Burger & Submarine</option>
+                            <option value="Sandwiches-&-Submarines">Sandwiches & Submarines</option>
                             <option value="Dessert">Dessert</option>
-                            <option value="Bubble Tea">Bubble Tea</option>
-                            <option value="Iced Tea & Coffee">Iced Tea & Coffee</option>
-                            <option value="Hot Beverage">Hot Beverage</option>
+                            <option value="Bubble-Tea">Bubble Tea</option>
+                            <option value="Iced-Tea-&-Coffee">Iced Tea & Coffee</option>
+                            <option value="Hot-Beverage">Hot Beverage</option>
                             <option value="Mojito">Mojito</option>
-                            <option value="Milk Shake">Milk Shake</option>
+                            <option value="Milk-Shake">Milk Shake</option>
                             <option value="Cocktails">Cocktails</option>
                         </select>
                     </div>

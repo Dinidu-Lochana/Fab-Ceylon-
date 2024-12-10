@@ -16,4 +16,15 @@ const getFoods = async (req, res) => {
     }
 };
 
-module.exports = { getFoods };
+const getFoodsByType = async (req , res) => {
+    const { foodCategory } = req.params;
+
+    try {
+        const foods = await Food.find({ foodCategory : foodCategory }).sort({ createdAt: -1 });
+        res.status(200).json(foods);
+    } catch (error) {
+        return res.status(401).json({ error: "Error in loading foods" });
+    }
+};
+
+module.exports = { getFoods , getFoodsByType };
