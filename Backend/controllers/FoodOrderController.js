@@ -4,14 +4,6 @@ const multer = require('multer');
 const path = require('path');
 const jwt = require('jsonwebtoken');
 
-const getFoods = async (req, res) => {
 
-    const {cafeName} = req.params;
-    
-    try {
-        const foods = await Food.find({ cafeName : cafeName }).sort({ createdAt: -1 });
-        res.status(200).json(foods);
-    } catch (error) {
-        return res.status(401).json({ error: "Error in loading foods" });
-    }
-};
+
+module.exports = { getFoods };
