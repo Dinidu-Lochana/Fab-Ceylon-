@@ -32,6 +32,9 @@ const FoodSchema = new Schema(
         image: { 
             type: String,
             required: true
+        },
+        foodRating:{
+            type:Number
         }
 });
 
