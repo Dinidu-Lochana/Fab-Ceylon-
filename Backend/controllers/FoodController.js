@@ -137,9 +137,10 @@ const updateFood = async (req, res) => {
 
         res.status(200).json(updatedFood);
     } catch (error) {
-        res.status(400).json({ error: error.message });
-    }
+        res.status(400).json({ error: error.message });
+    }
 };
+
 
 const deleteFood = async (req, res) => {
     const { id } = req.params;
@@ -161,9 +162,10 @@ const deleteFood = async (req, res) => {
        
         console.error("Error deleting food:", error.message);
         
-        res.status(400).json({ error: error.message });
-    }
+        res.status(400).json({ error: error.message });
+    }
 };
+
 
 
 
