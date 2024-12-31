@@ -3,7 +3,7 @@
     height: 768px;
     background-color: #ded2b7;
     padding-top: 100px;
-    background-image: url(C:/Users/24din/Downloads/1/frontend/src/Assets/LoginSignUp_back_Image.png);
+    background-image: url('C:\24\UOR\5 Sem\Git\Fab-Ceylon-\Frontend\src\Assets\LoginSignUp_back_Image.png');
     background-size: cover;
     background-position: center;
 }
