@@ -6,9 +6,9 @@ const CreateWebToken = (_id) => {
 };
 
 const login = async (req, res) => {
-    console.log(req.body)
+    
   const { contactNumber, password } = req.body;
-  console.log(contactNumber)
+  
   try {
     const detectedCustomer = await Customer.login(contactNumber, password);
     const createdToken = CreateWebToken(detectedCustomer._id);
