@@ -7,6 +7,9 @@ const multer = require('multer');
 const customerRoutes = require("./routes/CustomerRoute");
 const adminRoutes =  require("./routes/AdminRoute");
 const foodRoutes = require("./routes/FoodRoute");
+const foodMenuRoutes = require("./routes/FoodMenuRoute");
+const foodOrderPageRoutes = require("./routes/FoodOrderRoute");
+const foodOrderAdminPageRoutes = require("./routes/FoodOrderAdminRoute");
 const mongoose = require("mongoose");
 
 const app = express();
@@ -26,6 +29,10 @@ app.use(express.urlencoded({ limit: '50mb', extended: true }));
 app.use("/api/customers",customerRoutes);
 app.use("/api/admins",adminRoutes);
 app.use("/api/admins",foodRoutes);
+app.use("/api/customers",foodMenuRoutes);
+app.use("/api/customers/order", foodOrderPageRoutes);
+app.use("/api/admins/order", foodOrderAdminPageRoutes);
+
 
 
 mongoose
