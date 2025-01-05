@@ -1,10 +1,11 @@
 const express = require('express');
-const { rateFood, getRating, getOrders, submitRating } = require('../controllers/FoodRatingController');
+const { rateFood, getRating, getOrders, submitFoodRating} = require('../controllers/FoodRatingController');
 
 const router = express.Router();
 
-router.patch('/submitRating/:userId/:foodId', submitRating);
-router.get('/getRatings/:_id/:foodId', getRating);
-router.get('/getOrders/:_id/:userId',getOrders);
+router.get("/getOrders/:userId/:admin_id", getOrders);
+router.patch('/submitFoodRating', submitFoodRating);
+
+
 
 module.exports = router;

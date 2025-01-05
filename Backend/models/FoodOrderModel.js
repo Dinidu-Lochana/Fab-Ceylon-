@@ -15,7 +15,11 @@ const FoodOrderSchema = new Schema(
             required: true,
         },
         items: [
-            {
+            {   
+                image: {
+                    type: String,
+                    required: true,
+                },
                 foodId: {
                     type: mongoose.Schema.Types.ObjectId,
                     ref: "Food",
@@ -30,6 +34,10 @@ const FoodOrderSchema = new Schema(
                     type: Number,
                     required: true,
                     min: 0,
+                },
+                foodName: {
+                    type: String,
+                    required: true,
                 },
                 ratings: [
                     {
