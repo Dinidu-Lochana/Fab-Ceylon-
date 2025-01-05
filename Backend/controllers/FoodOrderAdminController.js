@@ -47,25 +47,14 @@ const getOrders = async (req, res) => {
 };
 
 const updateOrder = async (req, res) => {
-    console.log("Update Food Function Called");
+    console.log("Update Order Function Called");
 
     const { id } = req.params;
     console.log("Received ID:", id);
 
     const { status, paymentStatus } = req.body;
 
-    let emptyFields = [];
-
-    if (!status) {
-        emptyFields.push('status');
-    }
-    if (!paymentStatus) {
-        emptyFields.push('paymentStatus');
-    }
-    
-    if (emptyFields.length > 0) {
-        return res.status(400).json({ error: 'Please fill in all the fields', emptyFields });
-    }
+     
 
     try {
        
