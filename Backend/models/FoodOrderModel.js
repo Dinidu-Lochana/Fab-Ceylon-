@@ -30,7 +30,10 @@ const FoodOrderSchema = new Schema(
                     type: Number,
                     required: true
                 },
-                
+                foodName : {
+                    type: String,
+                    required: true
+                }
             }
         ],
         orderType: {

@@ -29,20 +29,12 @@ const getOrders = async (req, res) => {
         const enrichedOrders = await Promise.all(
             foodOrders.map(async (order) => {
                 const customer = await Customer.findById(order.userId);
-                const itemsWithFoodDetails = await Promise.all(
-                    order.items.map(async (item) => {
-                        const food = await Food.findById(item.foodId);
-                        return {
-                            ...item.toObject(),
-                            foodName: food ? food.name : "Unknown Food"
-                        };
-                    })
-                );
-
+                
                 return {
                     ...order.toObject(),
                     customerName: customer ? customer.name : "Unknown Customer",
-                    items: itemsWithFoodDetails
+                    contactNumber : customer ? customer.contactNumber: "Unknown Customer",
+                    
                 };
             })
         );
