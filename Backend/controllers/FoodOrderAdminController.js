@@ -1,4 +1,7 @@
+const Order = require('../models/FoodOrderModel');
 const Food = require('../models/FoodModel');
+const Customer = require('../models/CustomerModel')
+
 const mongoose = require('mongoose');
 const multer = require('multer');
 const path = require('path');
@@ -14,19 +17,40 @@ const getOrders = async (req, res) => {
     const token = authHeader.split(" ")[1]; 
     
     try {
-        
         const tokenObject = JSON.parse(token);
-
         const createdToken = tokenObject.createdToken;
-
         const decodedToken = jwt.decode(createdToken);
         const adminId = decodedToken._id; 
 
-        const foodorders = await Order.find({ admin_id : adminId }).sort({ createdAt: -1 });
-        res.status(200).json(foodorders);
+        // Fetch orders for the admin
+        const foodOrders = await Order.find({ admin_id: adminId }).sort({ createdAt: -1 });
+
+        // Enrich orders with food names and customer names
+        const enrichedOrders = await Promise.all(
+            foodOrders.map(async (order) => {
+                const customer = await Customer.findById(order.userId);
+                const itemsWithFoodDetails = await Promise.all(
+                    order.items.map(async (item) => {
+                        const food = await Food.findById(item.foodId);
+                        return {
+                            ...item.toObject(),
+                            foodName: food ? food.name : "Unknown Food"
+                        };
+                    })
+                );
+
+                return {
+                    ...order.toObject(),
+                    customerName: customer ? customer.name : "Unknown Customer",
+                    items: itemsWithFoodDetails
+                };
+            })
+        );
+
+        res.status(200).json(enrichedOrders);
     } catch (error) {
-        
-        return res.status(401).json({ token,error: "Unauthorized access. Invalid or expired token." });
+        console.error("Error fetching orders:", error);
+        return res.status(500).json({ error: "An error occurred while fetching orders." });
     }
 };
 

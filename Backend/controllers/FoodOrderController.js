@@ -51,7 +51,7 @@ const orderFoods = async (req, res) => {
         // Ensure items array is valid and calculate totalAmount
         let totalAmount = 0;
         for (const item of items) {
-            const { foodId, quantity, price } = item;
+            const { foodId, quantity, price ,  } = item;
 
             if (!foodId || !quantity || !price) {
                 return res.status(400).json({ message: "Invalid item details." });

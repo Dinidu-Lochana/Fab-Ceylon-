@@ -29,7 +29,8 @@ const FoodOrderSchema = new Schema(
                 price: {
                     type: Number,
                     required: true
-                }
+                },
+                
             }
         ],
         orderType: {

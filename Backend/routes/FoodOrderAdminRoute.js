@@ -9,7 +9,7 @@ router.get('/getorders',getOrders );
 
 router.patch('/updateorder/:id', updateOrder);
 
-router.delete('/deletefood/:id', RequireAuth, deleteOrder);
+router.delete('/deleteorder/:id', RequireAuth, deleteOrder);
 
 
 
