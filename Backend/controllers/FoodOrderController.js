@@ -21,7 +21,7 @@ const getFoodsByType = async (req , res) => {
     const { foodCategory } = req.params;
 
     try {
-        const foods = await Food.find({ foodCategory : foodCategory , isDeliveryAvailable : true}).sort({ createdAt: -1 });
+        const foods = await Food.find({ foodCategory : foodCategory }).sort({ createdAt: -1 });
         res.status(200).json(foods);
     } catch (error) {
         return res.status(401).json({ error: "Error in loading foods" });
@@ -40,8 +40,9 @@ const getFoodsDeliveryAvailable = async (req,res) => {
 
 const orderFoods = async (req, res) => {
     try {
-        // Extract data from request body
+        // Extract data from the request body
         const { admin_id, userId, items, orderType, paymentMethod, orderDescription } = req.body;
+    
 
         // Validate required fields
         if (!admin_id || !userId || !items || !orderType || !paymentMethod) {
@@ -50,10 +51,12 @@ const orderFoods = async (req, res) => {
 
         // Ensure items array is valid and calculate totalAmount
         let totalAmount = 0;
-        for (const item of items) {
-            const { foodId, foodName, quantity, price ,  } = item;
 
-            if (!foodId || !quantity || !price || !foodName) {
+        for (const item of items) {
+            const { foodId, quantity, price, ratings } = item;
+            
+
+            if (!foodId || !quantity || !price) {
                 return res.status(400).json({ message: "Invalid item details." });
             }
 
@@ -61,18 +64,45 @@ const orderFoods = async (req, res) => {
                 return res.status(400).json({ message: "Quantity and price must be valid numbers." });
             }
 
-            // Optional: Validate foodId exists in the database
-            const foodExists = await Food.findById(foodId);
-            if (!foodExists) {
+            // Find the food item
+            const food = await Food.findById(foodId);
+            if (!food) {
                 return res.status(404).json({ message: `Food item with ID ${foodId} not found.` });
             }
 
-            // Calculate total amount
+            // Update rating logic if ratings are provided
+            if (ratings && ratings.length > 0) {
+                for (const { userId: ratingUserId, rating } of ratings) {
+                    if (rating >= 1 && rating <= 5) { // Validate rating is between 1 and 5
+                        const newTotalRatings = food.totalRatings + 1;
+                        const newAverageRating =
+                            (food.averageRating * food.totalRatings + rating) / newTotalRatings;
+
+                        // Update the food document in the database
+                        await Food.findByIdAndUpdate(
+                            food._id,
+                            {
+                                $set: {
+                                    averageRating: newAverageRating,
+                                    totalRatings: newTotalRatings,
+                                },
+                            },
+                            { new: true }
+                        );
+                    }
+                }
+            }
+
+            // Calculate total amount for the order
             totalAmount += quantity * price;
         }
 
         // Create a new order
+        
         const newOrder = new Order({
+
+            
+         
             admin_id,
             userId,
             items,
@@ -82,16 +112,35 @@ const orderFoods = async (req, res) => {
             orderDescription,
         });
 
-        
-        
+        // Save the order
+        const savedOrder = await newOrder.save();
 
-        const newFoodOrder = await Order.create(newOrder) 
         // Respond with the saved order
-        res.status(200).json({ message: 'Order created successfully', newFoodOrder });
+        res.status(200).json({ message: "Order created successfully", order: savedOrder });
     } catch (error) {
         console.error("Error creating order:", error);
         res.status(500).json({ message: "Internal server error." });
     }
 };
 
-module.exports = { getFoods , getFoodsByType , getFoodsDeliveryAvailable , orderFoods};
+
+
+
+
+const getOrders = async (req, res) => {
+    const { userId, admin_id } = req.params;
+
+    try {
+        // Find orders matching both userId and adminId
+        const orders = await Order.find({ userId: userId, admin_id: admin_id });
+
+        res.status(200).json(orders);
+    } catch (error) {
+        console.error("Error fetching orders:", error);
+        return res.status(500).json({ error: "Error in loading orders" });
+    }
+};
+
+
+
+module.exports = { getFoods , getFoodsByType , getFoodsDeliveryAvailable , orderFoods, getOrders, };
