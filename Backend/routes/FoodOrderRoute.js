@@ -10,6 +10,3 @@ router.get('/orderfoods/:admin_id/:foodCategory',getFoodsByType );
 
 
 module.exports = router;
-
-
-
