@@ -39,7 +39,7 @@ mongoose
   .connect(process.env.MONGO_URI)
   .then(() => {
    
-    app.listen(process.env.PORT, () => {
+    app.listen(process.env.PORT, '0.0.0.0', () => {
       console.log("Database Connection successful!, listening in on port 4000");
     });
   })
