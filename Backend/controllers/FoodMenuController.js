@@ -17,10 +17,11 @@ const getFoods = async (req, res) => {
 };
 
 const getFoodsByType = async (req , res) => {
-    const { foodCategory } = req.params;
+    const { admin_id,foodCategory } = req.params;
+    
 
     try {
-        const foods = await Food.find({ foodCategory : foodCategory }).sort({ createdAt: -1 });
+        const foods = await Food.find({ admin_id : admin_id, foodCategory : foodCategory }).sort({ createdAt: -1 });
         res.status(200).json(foods);
     } catch (error) {
         return res.status(401).json({ error: "Error in loading foods" });
