@@ -18,7 +18,7 @@ const FoodOrderSchema = new Schema(
             {   
                 image: {
                     type: String,
-                    required: true,
+                    required: true
                 },
                 foodId: {
                     type: mongoose.Schema.Types.ObjectId,
