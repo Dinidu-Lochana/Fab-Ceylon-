@@ -36,7 +36,7 @@ const FoodSchema = new Schema(
         averageRating: {
             type: Number,
             default: 0,
-            min: 0,
+            min: 1,
             max: 5, 
         },
         totalRatings: {
