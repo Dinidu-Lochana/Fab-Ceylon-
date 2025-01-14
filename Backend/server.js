@@ -9,6 +9,9 @@ const adminRoutes =  require("./routes/AdminRoute");
 const foodRoutes = require("./routes/FoodRoute");
 const foodMenuRoutes = require("./routes/FoodMenuRoute");
 const foodOrderPageRoutes = require("./routes/FoodOrderRoute");
+const foodOrderAdminPageRoutes = require("./routes/FoodOrderAdminRoute");
+const foodRatingRoutes=require("./routes/FoodRatingRoute");
+
 const mongoose = require("mongoose");
 
 const app = express();
@@ -30,14 +33,15 @@ app.use("/api/admins",adminRoutes);
 app.use("/api/admins",foodRoutes);
 app.use("/api/customers",foodMenuRoutes);
 app.use("/api/customers/order", foodOrderPageRoutes);
-
+app.use("/api/admins/order", foodOrderAdminPageRoutes);
+app.use("/api/customers/rating",foodRatingRoutes);
 
 
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => {
    
-    app.listen(process.env.PORT, () => {
+    app.listen(process.env.PORT, '0.0.0.0', () => {
       console.log("Database Connection successful!, listening in on port 4000");
     });
   })

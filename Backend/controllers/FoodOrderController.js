@@ -18,10 +18,11 @@ const getFoods = async (req, res) => {
 };
 
 const getFoodsByType = async (req , res) => {
-    const { foodCategory } = req.params;
+    const { admin_id,foodCategory } = req.params;
+    
 
     try {
-        const foods = await Food.find({ foodCategory : foodCategory }).sort({ createdAt: -1 });
+        const foods = await Food.find({ admin_id : admin_id , foodCategory : foodCategory , isDeliveryAvailable : true}).sort({ createdAt: -1 });
         res.status(200).json(foods);
     } catch (error) {
         return res.status(401).json({ error: "Error in loading foods" });
@@ -51,9 +52,9 @@ const orderFoods = async (req, res) => {
         // Ensure items array is valid and calculate totalAmount
         let totalAmount = 0;
         for (const item of items) {
-            const { foodId, quantity, price } = item;
+            const { foodId, foodName, quantity, price ,  } = item;
 
-            if (!foodId || !quantity || !price) {
+            if (!foodId || !quantity || !price || !foodName) {
                 return res.status(400).json({ message: "Invalid item details." });
             }
 

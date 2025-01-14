@@ -33,9 +33,17 @@ const FoodSchema = new Schema(
             type: String,
             required: true
         },
-        foodRating:{
-            type:Number
-        }
+        averageRating: {
+            type: Number,
+            default: 0,
+            min: 1,
+            max: 5, 
+        },
+        totalRatings: {
+            type: Number,
+            default: 0,
+            min: 0,
+        },
 });
 
 
