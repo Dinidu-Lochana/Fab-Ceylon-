@@ -1,13 +1,14 @@
 const Customer = require("../models/CustomerModel");
 const jwt = require("jsonwebtoken");
+
 const CreateWebToken = (_id) => {
   return jwt.sign({ _id }, process.env.TOKENCODE, { expiresIn: "3d" });
 };
 
 const login = async (req, res) => {
-    console.log(req.body)
+    
   const { contactNumber, password } = req.body;
-  console.log(contactNumber)
+  
   try {
     const detectedCustomer = await Customer.login(contactNumber, password);
     const createdToken = CreateWebToken(detectedCustomer._id);
