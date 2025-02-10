@@ -2,30 +2,46 @@ require("dotenv").config();
 
 const express = require("express");
 const cors = require("cors");
+const multer = require('multer');
 
 const customerRoutes = require("./routes/CustomerRoute");
 const adminRoutes =  require("./routes/AdminRoute");
+const foodRoutes = require("./routes/FoodRoute");
+const foodMenuRoutes = require("./routes/FoodMenuRoute");
+const foodOrderPageRoutes = require("./routes/FoodOrderRoute");
+const foodOrderAdminPageRoutes = require("./routes/FoodOrderAdminRoute");
+const foodRatingRoutes=require("./routes/FoodRatingRoute");
+
 const mongoose = require("mongoose");
 
-const app2 = express();
+const app = express();
 
-
-app2.use(express.json());
-app2.use(cors());
-app2.use((req, res, next) => {
+app.use('/uploads', express.static('uploads'));
+app.use(express.json());
+app.use(cors());
+app.use((req, res, next) => {
   console.log(req.path, req.method);
   next();
 });
 
+app.use(express.json({ limit: '50mb' })); 
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
-app2.use("/api/customers",customerRoutes);
-app2.use("/api/admins",adminRoutes);
+
+app.use("/api/customers",customerRoutes);
+app.use("/api/admins",adminRoutes);
+app.use("/api/admins",foodRoutes);
+app.use("/api/customers",foodMenuRoutes);
+app.use("/api/customers/order", foodOrderPageRoutes);
+app.use("/api/admins/order", foodOrderAdminPageRoutes);
+app.use("/api/customers/rating",foodRatingRoutes);
+
 
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => {
    
-    app2.listen(process.env.PORT, () => {
+    app.listen(process.env.PORT, '0.0.0.0', () => {
       console.log("Database Connection successful!, listening in on port 4000");
     });
   })
