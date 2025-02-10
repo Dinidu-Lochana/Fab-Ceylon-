@@ -9,47 +9,31 @@ const FoodOrderSchema = new Schema(
             ref: "Customer",
             required: true,
         },
-        admin_id: {
+        admin_id: {  
             type: mongoose.Schema.Types.ObjectId,
             ref: "Admin",
             required: true,
         },
+        senderDetails: {
+            name: { type: String, required: true },
+            contactNumber: { type: String, required: true },
+        },
+        receiverDetails: {
+            name: { type: String },
+            contactNumber: { type: String },
+            address: { type: String },
+        },
         items: [
             {   
-                image: {
-                    type: String,
-                    required: true
-                },
-                foodId: {
-                    type: mongoose.Schema.Types.ObjectId,
-                    ref: "Food",
-                    required: true,
-                },
-                quantity: {
-                    type: Number,
-                    required: true,
-                    min: 1,
-                },
-                price: {
-                    type: Number,
-                    required: true,
-                    min: 0,
-                },
-                foodName: {
-                    type: String,
-                    required: true,
-                },
+                image: { type: String, required: true },
+                foodId: { type: mongoose.Schema.Types.ObjectId, ref: "Food", required: true },
+                quantity: { type: Number, required: true, min: 1 },
+                price: { type: Number, required: true, min: 0 },
+                foodName: { type: String, required: true },
                 ratings: [
                     {
-                        userId: {
-                            type: mongoose.Schema.Types.ObjectId,
-                            ref: "User",
-                        },
-                        rating: {
-                            type: Number,
-                            min: 1,
-                            max: 5,
-                        },
+                        userId: { type: mongoose.Schema.Types.ObjectId, ref: "Customer" },
+                        rating: { type: Number, min: 1, max: 5 },
                     },
                 ],
             },
@@ -81,11 +65,25 @@ const FoodOrderSchema = new Schema(
         },
         orderDescription: {
             type: String,
+            maxlength: 500,
         },
     },
-    { timestamps: true } 
+    { timestamps: true }
 );
 
+// details only if orderType == "Delivery"
+FoodOrderSchema.pre("validate", function (next) {
+    if (this.orderType === "Delivery") {
+        if (!this.receiverDetails || !this.receiverDetails.name || !this.receiverDetails.contactNumber || !this.receiverDetails.address) {
+            return next(new Error("Receiver details (name, contact number, address) are required for Delivery orders."));
+        }
+    }
+    next();
+});
 
 
-module.exports = mongoose.model("Order",FoodOrderSchema);
+FoodOrderSchema.index({ userId: 1 });
+FoodOrderSchema.index({ adminId: 1 });
+FoodOrderSchema.index({ orderType: 1, status: 1 }); 
+
+module.exports = mongoose.model("Order", FoodOrderSchema);
