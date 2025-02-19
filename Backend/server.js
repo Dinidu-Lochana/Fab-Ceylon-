@@ -5,6 +5,7 @@ const cors = require("cors");
 const multer = require('multer');
 
 const customerRoutes = require("./routes/CustomerRoute");
+const profileSetiing = require("./routes/UserProfileSettingRoute")
 const adminRoutes =  require("./routes/AdminRoute");
 const foodRoutes = require("./routes/FoodRoute");
 const foodMenuRoutes = require("./routes/FoodMenuRoute");
@@ -27,7 +28,7 @@ app.use((req, res, next) => {
 app.use(express.json({ limit: '50mb' })); 
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
-
+app.use("/api/customers",profileSetiing);
 app.use("/api/customers",customerRoutes);
 app.use("/api/admins",adminRoutes);
 app.use("/api/admins",foodRoutes);
