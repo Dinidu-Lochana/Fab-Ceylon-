@@ -41,18 +41,32 @@ const getFoodsDeliveryAvailable = async (req,res) => {
 
 const orderFoods = async (req, res) => {
     try {
-        // Extract data from request body
-        const { admin_id, userId, items, orderType, paymentMethod, orderDescription } = req.body;
+        
+        const { 
+            admin_id, userId, items, orderType, 
+            paymentMethod, orderDescription, senderDetails, receiverDetails 
+        } = req.body;
 
-        // Validate required fields
-        if (!admin_id || !userId || !items || !orderType || !paymentMethod) {
+   
+        if (!admin_id || !userId || !items || !orderType || !paymentMethod || !senderDetails) {
             return res.status(400).json({ message: "Missing required fields." });
         }
+      
+        if (!senderDetails.name || !senderDetails.contactNumber) {
+            return res.status(400).json({ message: "Sender name and contact number are required." });
+        }
 
-        // Ensure items array is valid and calculate totalAmount
+       
+        if (orderType === "Delivery") {
+            if (!receiverDetails || !receiverDetails.name || !receiverDetails.contactNumber || !receiverDetails.address) {
+                return res.status(400).json({ message: "Receiver details (name, contact number, address) are required for delivery." });
+            }
+        }
+
+        
         let totalAmount = 0;
         for (const item of items) {
-            const { foodId, foodName, quantity, price ,  } = item;
+            const { foodId, foodName, quantity, price } = item;
 
             if (!foodId || !quantity || !price || !foodName) {
                 return res.status(400).json({ message: "Invalid item details." });
@@ -62,17 +76,17 @@ const orderFoods = async (req, res) => {
                 return res.status(400).json({ message: "Quantity and price must be valid numbers." });
             }
 
-            // Optional: Validate foodId exists in the database
+            
             const foodExists = await Food.findById(foodId);
             if (!foodExists) {
                 return res.status(404).json({ message: `Food item with ID ${foodId} not found.` });
             }
 
-            // Calculate total amount
+            
             totalAmount += quantity * price;
         }
 
-        // Create a new order
+       
         const newOrder = new Order({
             admin_id,
             userId,
@@ -81,18 +95,21 @@ const orderFoods = async (req, res) => {
             paymentMethod,
             totalAmount,
             orderDescription,
+            senderDetails,
+            receiverDetails: orderType === "Delivery" ? receiverDetails : null, // Only if Delivery
         });
 
-        
-        
+  
+        const newFoodOrder = await Order.create(newOrder);
 
-        const newFoodOrder = await Order.create(newOrder) 
-        // Respond with the saved order
-        res.status(200).json({ message: 'Order created successfully', newFoodOrder });
+       
+        res.status(200).json({ message: 'Order created successfully'});
+
     } catch (error) {
         console.error("Error creating order:", error);
         res.status(500).json({ message: "Internal server error." });
     }
 };
+
 
 module.exports = { getFoods , getFoodsByType , getFoodsDeliveryAvailable , orderFoods};
