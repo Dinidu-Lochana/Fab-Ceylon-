@@ -9,6 +9,7 @@ const adminRoutes =  require("./routes/AdminRoute");
 const foodRoutes = require("./routes/FoodRoute");
 const foodMenuRoutes = require("./routes/FoodMenuRoute");
 const foodOrderPageRoutes = require("./routes/FoodOrderRoute");
+const reservationRoutes = require("./routes/ReservationRoute");
 const mongoose = require("mongoose");
 
 const app = express();
@@ -30,7 +31,7 @@ app.use("/api/admins",adminRoutes);
 app.use("/api/admins",foodRoutes);
 app.use("/api/customers",foodMenuRoutes);
 app.use("/api/customers/order", foodOrderPageRoutes);
-
+app.use("/api", reservationRoutes);
 
 
 mongoose
@@ -45,3 +46,4 @@ mongoose
     console.log(error);
   });
 
+  
