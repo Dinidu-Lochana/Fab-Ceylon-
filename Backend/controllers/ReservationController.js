@@ -1,6 +1,16 @@
 // controllers/ReservationController.js
+const nodemailer = require("nodemailer");
 const Reservation = require("../models/ReservationModel");
 
+// Create a transporter for sending emails
+const transporter = nodemailer.createTransport({
+  host: 'smtp.ethereal.email',
+  port: 587,
+  auth: {
+      user: 'colby.schoen@ethereal.email',
+      pass: 'fh78D4cE5mwdyRExJA'
+  }
+});
 // Create a new reservation
 exports.createReservation = async (req, res) => {
   try {
@@ -22,6 +32,23 @@ exports.createReservation = async (req, res) => {
 
     // Save the reservation to the database
     await newReservation.save();
+
+    // Prepare email options
+    const mailOptions = {
+      from: "colby.schoen@ethereal.email", // sender address
+      to: "jiltone0@gmail.com", // list of receivers
+      subject: "Reservation Confirmed", // Subject line
+      text: `Your reservation at ${cafe} has been confirmed for ${people} people on ${date} at ${time}.`, // plain text body
+    };
+
+    // Send the email
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.error("Error sending email:", error);
+        return res.status(500).json({ message: "Failed to send confirmation email." });
+      }
+      console.log("Email sent: " + info.response);
+    });
 
     res.status(201).json({ message: "Reservation confirmed!", reservation: newReservation });
   } catch (error) {
