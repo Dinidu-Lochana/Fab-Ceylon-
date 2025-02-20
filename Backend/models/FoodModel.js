@@ -13,6 +13,11 @@ const FoodSchema = new Schema(
             required: true,
             min: 1
         },
+        packagingPrice:{
+            type: Number, 
+            required: true,
+            min: 1
+        },
         description:{
             type:String, 
             required:true
@@ -22,6 +27,10 @@ const FoodSchema = new Schema(
             required:true
         },
         isDeliveryAvailable:{
+            type:Boolean,
+            required:true
+        },
+        isExtraAddCheeseAvailable:{
             type:Boolean,
             required:true
         },

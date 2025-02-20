@@ -19,7 +19,7 @@ const upload = multer({ storage: storage });
 
 const createFood = async (req,res) => {
     
-    const {admin_id, foodName , price , description , foodCategory, isDeliveryAvailable } = req.body;
+    const {admin_id, foodName , price , packagingPrice , description , foodCategory, isDeliveryAvailable ,  isExtraAddCheeseAvailable } = req.body;
 
     let emptyFields = []
 
@@ -29,6 +29,9 @@ const createFood = async (req,res) => {
     if(!price){
         emptyFields.push['price'];
     }
+    if(!packagingPrice){
+        emptyFields.push['packagingPrice'];
+    }
     if(!description){
         emptyFields.push['description'];
     }
@@ -37,6 +40,9 @@ const createFood = async (req,res) => {
     }
     if(!isDeliveryAvailable){
         emptyFields.push['isDeliveryAvailable'];
+    }
+    if(!isExtraAddCheeseAvailable){
+        emptyFields.push['isExtraAddCheeseAvailable'];
     }
     if (!req.file) {
         emptyFields.push('image');
@@ -52,8 +58,10 @@ const createFood = async (req,res) => {
             admin_id,
             foodName,
             price,
+            packagingPrice,
             description,
             foodCategory,
+            isExtraAddCheeseAvailable,
             isDeliveryAvailable,
             image: imagePath
         };
@@ -97,7 +105,7 @@ const updateFood = async (req, res) => {
     const { id } = req.params;
     console.log("Received ID:", id);
 
-    const { foodName, price, description, foodCategory, isDeliveryAvailable } = req.body;
+    const { foodName, packagingPrice, price, description, foodCategory, isExtraAddCheeseAvailable, isDeliveryAvailable } = req.body;
 
     let emptyFields = [];
 
@@ -106,6 +114,12 @@ const updateFood = async (req, res) => {
     }
     if (!price) {
         emptyFields.push('price');
+    }
+    if(!packagingPrice){
+        emptyFields.push['packagingPrice'];
+    }
+    if(!packagingPrice){
+        emptyFields.push['packagingPrice'];
     }
     if (!description) {
         emptyFields.push('description');
