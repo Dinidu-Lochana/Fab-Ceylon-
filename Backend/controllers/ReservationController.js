@@ -56,3 +56,19 @@ exports.createReservation = async (req, res) => {
     res.status(500).json({ message: "Failed to submit reservation. Please try again." });
   }
 };
+
+exports.getAllReservation = async (req, res) => {
+  try {
+    const recervationData = await Reservation.find();
+
+    if(!recervationData){
+      res.status(400).json({code:400,message:'there are no recervations'});
+    }
+    console.log(recervationData);
+
+    res.status(200).json({code:200, message:'all reservation', data:recervationData});
+  }catch(error){
+    console.error(error);
+    res.status(500).json({code:500, message:'cant get all reservation'});
+  }
+}
