@@ -14,6 +14,8 @@ const foodOrderAdminPageRoutes = require("./routes/FoodOrderAdminRoute");
 const foodRatingRoutes=require("./routes/FoodRatingRoute");
 const orderAnalysisRoutes=require("./routes/OrderAnalysisRoute");
 const paymentRoutes = require('./routes/PaymentRoutes');
+const reservationRoutes = require("./routes/ReservationRoute");
+
 
 const mongoose = require("mongoose");
 
@@ -43,6 +45,8 @@ app.use("/api/admins/order", foodOrderAdminPageRoutes);
 app.use("/api/customers/rating",foodRatingRoutes);
 app.use("/api/ordercount",orderAnalysisRoutes);
 app.use('/api/payments', paymentRoutes);
+app.use("/api", reservationRoutes);
+
 
 
 mongoose
