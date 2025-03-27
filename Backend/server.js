@@ -13,10 +13,14 @@ const foodOrderPageRoutes = require("./routes/FoodOrderRoute");
 const foodOrderAdminPageRoutes = require("./routes/FoodOrderAdminRoute");
 const foodRatingRoutes=require("./routes/FoodRatingRoute");
 const orderAnalysisRoutes=require("./routes/OrderAnalysisRoute");
+const paymentRoutes = require('./routes/PaymentRoutes');
 
 const mongoose = require("mongoose");
 
 const app = express();
+
+// Special handling for Stripe webhooks
+app.use('/api/payments/webhook', express.raw({type: 'application/json'}));
 
 app.use('/uploads', express.static('uploads'));
 app.use(express.json());
@@ -38,6 +42,7 @@ app.use("/api/customers/order", foodOrderPageRoutes);
 app.use("/api/admins/order", foodOrderAdminPageRoutes);
 app.use("/api/customers/rating",foodRatingRoutes);
 app.use("/api/ordercount",orderAnalysisRoutes);
+app.use('/api/payments', paymentRoutes);
 
 
 mongoose

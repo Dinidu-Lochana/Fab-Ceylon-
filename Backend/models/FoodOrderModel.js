@@ -58,6 +58,15 @@ const FoodOrderSchema = new Schema(
             enum: ["Cash", "Card"],
             required: true,
         },
+        // New fields for Stripe integration
+        stripePaymentIntentId: {
+            type: String,
+            default: null,
+          },
+          stripeCustomerId: {
+            type: String,
+            default: null,
+          },
         totalAmount: {
             type: Number,
             required: true,
@@ -85,5 +94,6 @@ FoodOrderSchema.pre("validate", function (next) {
 FoodOrderSchema.index({ userId: 1 });
 FoodOrderSchema.index({ adminId: 1 });
 FoodOrderSchema.index({ orderType: 1, status: 1 }); 
+FoodOrderSchema.index({ stripePaymentIntentId: 1 });
 
 module.exports = mongoose.model("Order", FoodOrderSchema);
