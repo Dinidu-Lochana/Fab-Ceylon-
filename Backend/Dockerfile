@@ -1,5 +1,5 @@
 # Use Node.js LTS version as the base image
-FROM node:18-alpine
+FROM node:18
 
 # Set working directory
 WORKDIR /app
@@ -17,4 +17,4 @@ COPY . .
 EXPOSE 5000
 
 # Start the application
-CMD ["npm", "start"] 
+CMD [ "npm","run", "dev" ]
