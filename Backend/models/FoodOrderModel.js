@@ -15,8 +15,8 @@ const FoodOrderSchema = new Schema(
             required: true,
         },
         senderDetails: {
-            name: { type: String, required: true },
-            contactNumber: { type: String, required: true },
+            name: { type: String },
+            contactNumber: { type: String },
         },
         receiverDetails: {
             name: { type: String },
